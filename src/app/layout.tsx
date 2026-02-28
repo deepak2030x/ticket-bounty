@@ -1,9 +1,11 @@
 import "./globals.css";
 
+import { Tickets } from "lucide-react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 
+import { Button } from "@/components/ui/button";
 import { homePath, ticketsPath } from "@/paths";
 
 const geistSans = Geist({
@@ -33,32 +35,31 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <nav
-          className="
-            supports-backdrop-blur:bg-background/60
-            fixed left-0 right-0 top-0 z-20
-            border-b bg-background/95 backdrop-blur
-            w-full flex py-2.5 px-5 justify-between
-          "
+          className="supports-backdrop-blur:bg-background/60 
+        bg-background/95 fixed top-0 right-0 left-0 z-20 flex 
+        w-full justify-between border-b px-5 py-2.5 backdrop-blur"
         >
           <div>
-            <Link href={homePath()} className="text-lg font-bold">
-              Home
-            </Link>
+            <Button asChild variant="ghost">
+              <Link href={homePath()}>
+                <Tickets />
+                <h1 className="text-xl font-semibold">Ticket Bounty</h1>
+              </Link>
+            </Button>
           </div>
           <div>
-            <Link href={ticketsPath()} className="text-sm underline">
-              Tickets
-            </Link>
+            {/* 
+            Another variant of the button component. this tells apply the button styles to the link component.
+              <Link href={ticketsPath()} className={buttonVariants({ variant: "outline"})}>Tickets</Link>
+            */}
+            <Button asChild variant="default">
+              <Link href={ticketsPath()}>Tickets</Link>
+            </Button>
           </div>
         </nav>
         <main
-          className="
-            min-h-screen flex-1
-            overflow-y-auto overflow-x-hidden
-            py-24 px-8
-            bg-secondary/20
-            flex flex-col
-          "
+          className="bg-secondary/20 flex min-h-screen flex-1 
+        flex-col overflow-x-hidden overflow-y-auto px-8 py-24"
         >
           {children}
         </main>
