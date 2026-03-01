@@ -1,10 +1,9 @@
-import Link from "next/link";
+import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
-import { Placeholder } from "@/components/custom/placeholder";
-import { Button } from "@/components/ui/button";
-import { initialTickets } from "@/data";
+import { Spinner } from "@/components/custom/spinner";
 import { TicketItem } from "@/features/ticket/components/ticket-item";
-import { ticketsPath } from "@/paths";
+import { getTicket } from "@/features/ticket/queries/getTicket";
 
 type TicketPageProps = Readonly<{
   params: Promise<{
@@ -14,25 +13,18 @@ type TicketPageProps = Readonly<{
 
 async function TicketPage({ params }: TicketPageProps) {
   const { ticketId } = await params;
-  const ticket = initialTickets.find((ticket) => ticket.id === ticketId);
+  const ticket = await getTicket(ticketId);
 
   if (!ticket) {
-    return (
-      <Placeholder
-        label="Ticket not found"
-        renderButton={(className) => (
-          <Button className={className} variant="outline" asChild>
-            <Link href={ticketsPath()}>Go To Tickets</Link>
-          </Button>
-        )}
-      />
-    );
+    notFound();
   }
 
   return (
-    <div className="flex justify-center animate-fade-from-top">
-      <TicketItem ticket={ticket} isDetail />
-    </div>
+    <Suspense fallback={<Spinner />}>
+      <div className="flex justify-center animate-fade-from-top">
+        <TicketItem ticket={ticket} isDetail />
+      </div>
+    </Suspense>
   );
 }
 

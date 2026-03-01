@@ -15,7 +15,6 @@ type TicketItemProps = Readonly<{
 }>;
 
 function TicketItem({ ticket, isDetail = false }: TicketItemProps) {
-  console.log("Rendering TicketItem:");
   const detailButton = (
     <Button asChild variant="outline" size="icon">
       <Link href={ticketPath(ticket.id)} className="text-sm underline">
