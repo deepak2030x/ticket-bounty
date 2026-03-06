@@ -1,0 +1,13 @@
+"use server";
+
+import prisma from "@/lib/prisma";
+
+async function deleteTicket(id: string) {
+  await prisma.ticket.delete({
+    where: {
+      id,
+    },
+  });
+}
+
+export { deleteTicket };
