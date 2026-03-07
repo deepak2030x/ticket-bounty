@@ -1,6 +1,10 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+
 import prisma from "@/lib/prisma";
+import { ticketsPath } from "@/paths";
 
 async function deleteTicket(id: string) {
   await prisma.ticket.delete({
@@ -8,6 +12,9 @@ async function deleteTicket(id: string) {
       id,
     },
   });
+
+  revalidatePath(ticketsPath());
+  redirect(ticketsPath());
 }
 
 export { deleteTicket };
