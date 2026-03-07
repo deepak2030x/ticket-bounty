@@ -1,3 +1,7 @@
+"use client";
+import { LucideLoaderCircle } from "lucide-react";
+import { useTransition } from "react";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,11 +15,16 @@ type TicketUpsertFormProps = Readonly<{
 }>;
 
 function TicketUpsertForm({ ticket }: TicketUpsertFormProps) {
+  const [isPending, startTransition] = useTransition();
+
+  function upsertTicketAction(formData: FormData) {
+    startTransition(async () => {
+      await upsertTicket.bind(null, ticket?.id)(formData);
+    });
+  }
+
   return (
-    <form
-      action={upsertTicket.bind(null, ticket?.id)}
-      className="flex flex-col gap-y-3"
-    >
+    <form action={upsertTicketAction} className="flex flex-col gap-y-3">
       <Label htmlFor="title">Title</Label>
       <Input
         id="title"
@@ -30,7 +39,12 @@ function TicketUpsertForm({ ticket }: TicketUpsertFormProps) {
         name="content"
         defaultValue={ticket?.content}
       />
-      <Button type="submit">{ticket ? "Update" : "Create"}</Button>
+      <Button type="submit" disabled={isPending}>
+        {isPending && (
+          <LucideLoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+        )}
+        {ticket ? "Update" : "Create"}
+      </Button>
     </form>
   );
 }
