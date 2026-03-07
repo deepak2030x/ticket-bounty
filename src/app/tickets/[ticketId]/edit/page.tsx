@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 
+import { CardCompact } from "@/components/custom/card-compact";
 import { TicketUpsertForm } from "@/features/ticket/components/ticket-upsert-form";
 import { getTicket } from "@/features/ticket/queries/getTicket";
 
@@ -18,8 +19,12 @@ async function TicketEditPage({ params }: TicketEditPageProps) {
   }
 
   return (
-    <div className="flex-1 self-center w-full max-w-[420px] animate-fade-from-top">
-      <TicketUpsertForm ticket={ticket} />
+    <div className="animate-fade-from-top self-center w-full max-w-[420px]">
+      <CardCompact
+        title="Edit Ticket"
+        description="View and manage your existing tickets"
+        content={<TicketUpsertForm ticket={ticket} />}
+      />
     </div>
   );
 }
