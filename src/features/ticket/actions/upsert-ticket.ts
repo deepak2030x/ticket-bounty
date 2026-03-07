@@ -3,30 +3,26 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import prisma from "@/lib/prisma";
-import { ticketsPath } from "@/paths";
+import { ticketPath, ticketsPath } from "@/paths";
 
 async function upsertTicket(ticketId: string | undefined, formData: FormData) {
   const data = {
-    title: formData.get("title"),
-    content: formData.get("content"),
+    title: formData.get("title") as string,
+    content: formData.get("content") as string,
   };
 
   await prisma.ticket.upsert({
     where: {
       id: ticketId ?? "",
     },
-    create: {
-      title: data.title as string,
-      content: data.content as string,
-    },
-    update: {
-      title: data.title as string,
-      content: data.content as string,
-    },
+    create: data,
+    update: data,
   });
 
   revalidatePath(ticketsPath());
-  redirect(ticketsPath());
+  if (ticketId) {
+    redirect(ticketPath(ticketId));
+  }
 }
 
 export { upsertTicket };
