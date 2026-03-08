@@ -1,7 +1,13 @@
 "use client";
 import { useActionState } from "react";
 
+import { FieldError } from "@/components/custom/form/field-error";
+import { Form } from "@/components/custom/form/form";
 import { SubmitButton } from "@/components/custom/form/submit-button";
+import {
+  ActionState,
+  EMPTY_ACTION_STATE,
+} from "@/components/custom/form/utils/to-action-state";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -14,12 +20,13 @@ type TicketUpsertFormProps = Readonly<{
 }>;
 
 function TicketUpsertForm({ ticket }: TicketUpsertFormProps) {
-  const [actionState, action] = useActionState(
+  const [actionState, action] = useActionState<ActionState, FormData>(
     upsertTicket.bind(null, ticket?.id),
-    { message: "" },
+    EMPTY_ACTION_STATE,
   );
+
   return (
-    <form action={action} className="flex flex-col gap-y-3">
+    <Form action={action} actionState={actionState}>
       <Label htmlFor="title">Title</Label>
       <Input
         id="title"
@@ -29,6 +36,7 @@ function TicketUpsertForm({ ticket }: TicketUpsertFormProps) {
           (actionState.payload?.get("title") as string) ?? ticket?.title
         }
       />
+      <FieldError actionState={actionState} name="title" />
       <Label htmlFor="content">Content</Label>
       <Textarea
         id="content"
@@ -38,9 +46,9 @@ function TicketUpsertForm({ ticket }: TicketUpsertFormProps) {
           (actionState.payload?.get("content") as string) ?? ticket?.content
         }
       />
+      <FieldError actionState={actionState} name="content" />
       <SubmitButton label={ticket ? "Update" : "Create"} />
-      {actionState.message}
-    </form>
+    </Form>
   );
 }
 

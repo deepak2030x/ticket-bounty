@@ -6,13 +6,17 @@ import { z } from "zod";
 import {
   ActionState,
   fromErrorToActionState,
+  toActionState,
 } from "@/components/custom/form/utils/to-action-state";
 import prisma from "@/lib/prisma";
 import { ticketPath, ticketsPath } from "@/paths";
 
 const upsertTicketSchema = z.object({
-  title: z.string().min(1).max(200),
-  content: z.string().min(1).max(1024),
+  title: z.string().min(3, "Title must be at least 3 characters long").max(200),
+  content: z
+    .string()
+    .min(3, "Content must be at least 3 characters long")
+    .max(1024),
 });
 
 async function upsertTicket(
@@ -39,11 +43,10 @@ async function upsertTicket(
   if (ticketId) {
     redirect(ticketPath(ticketId));
   }
-  return {
-    message: ticketId
-      ? "Ticket updated successfully"
-      : "Ticket created successfully",
-  };
+  const message = ticketId
+    ? "Ticket updated successfully"
+    : "Ticket created successfully";
+  return toActionState("SUCCESS", message);
 }
 
 export { upsertTicket };

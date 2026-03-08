@@ -5,6 +5,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 
 import { TopNavBar } from "@/components/custom/top-nav-bar";
 import { ThemeProvider } from "@/components/theme/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,6 +41,7 @@ export default function RootLayout({
           >
             {children}
           </main>
+          <Toaster position="bottom-right" expand />
         </ThemeProvider>
       </body>
     </html>
