@@ -13,7 +13,7 @@ export const EMPTY_ACTION_STATE: ActionState = {
   timestamp: Date.now(),
 };
 
-function fromErrorToActionState(error: unknown, formData: FormData) {
+function fromErrorToActionState(error: unknown, formData?: FormData) {
   if (error instanceof ZodError) {
     return {
       status: "ERROR" as const,

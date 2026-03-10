@@ -6,4 +6,10 @@ const TICKET_ICONS = {
   CLOSED: <LucideCircleCheck />,
 };
 
-export { TICKET_ICONS };
+const TICKET_STATUS_LABELS = {
+  OPEN: "Open",
+  CLOSED: "Done",
+  IN_PROGRESS: "In Progress",
+};
+
+export { TICKET_ICONS, TICKET_STATUS_LABELS };

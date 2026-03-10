@@ -1,6 +1,6 @@
 import "dotenv/config";
 
-import { TicketCreateInput } from "@/generated/prisma/internal/prismaNamespaceBrowser";
+import { TicketCreateInput } from "@/generated/prisma/models/Ticket";
 import prisma from "@/lib/prisma";
 
 const initialTickets: TicketCreateInput[] = [
@@ -8,16 +8,22 @@ const initialTickets: TicketCreateInput[] = [
     title: "Ticket 1",
     content: "This is the first ticket from db",
     status: "CLOSED",
+    deadline: new Date().toISOString().split("T")[0],
+    bounty: 220, // $2.20
   },
   {
     title: "Ticket 2",
     content: "This is the second ticket from db",
     status: "OPEN",
+    deadline: new Date().toISOString().split("T")[0],
+    bounty: 340, // $3.40
   },
   {
     title: "Ticket 3",
     content: "This is the third ticket from db",
     status: "IN_PROGRESS",
+    deadline: new Date().toISOString().split("T")[0],
+    bounty: 760, // $7.60
   },
 ];
 

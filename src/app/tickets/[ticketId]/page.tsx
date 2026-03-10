@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
+import { RedirectToast } from "@/components/custom/redirect-toast";
 import { Spinner } from "@/components/custom/spinner";
 import { TicketItem } from "@/features/ticket/components/ticket-item";
 import { getTicket } from "@/features/ticket/queries/getTicket";
@@ -20,11 +21,14 @@ async function TicketPage({ params }: TicketPageProps) {
   }
 
   return (
-    <Suspense fallback={<Spinner />}>
-      <div className="flex justify-center animate-fade-from-top">
-        <TicketItem ticket={ticket} isDetail />
-      </div>
-    </Suspense>
+    <>
+      <Suspense fallback={<Spinner />}>
+        <div className="flex justify-center animate-fade-from-top">
+          <TicketItem ticket={ticket} isDetail />
+        </div>
+      </Suspense>
+      <RedirectToast />
+    </>
   );
 }
 

@@ -1,17 +1,24 @@
 import clsx from "clsx";
 import {
+  LucideEllipsisVertical,
   LucidePencil,
   LucideSquareArrowOutUpRight,
-  LucideTrash,
 } from "lucide-react";
 import Link from "next/link";
 
+import { TicketMoreMenu } from "@/components/custom/ticket-more-menu";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Ticket } from "@/generated/prisma/client";
 import { ticketEditPath, ticketPath } from "@/paths";
+import { toCurrencyFromCent } from "@/utils/currency";
 
-import { deleteTicket } from "../actions/delete-ticket";
 import { TICKET_ICONS } from "../constants";
 
 type TicketItemProps = Readonly<{
@@ -28,14 +35,6 @@ function TicketItem({ ticket, isDetail = false }: TicketItemProps) {
     </Button>
   );
 
-  const deleteButton = (
-    <form action={deleteTicket.bind(null, ticket.id)}>
-      <Button variant="outline" size="icon">
-        <LucideTrash />
-      </Button>
-    </form>
-  );
-
   const editButton = (
     <Button variant="outline" size="icon" asChild>
       <Link href={ticketEditPath(ticket.id)}>
@@ -44,6 +43,16 @@ function TicketItem({ ticket, isDetail = false }: TicketItemProps) {
     </Button>
   );
 
+  const moreMenu = (
+    <TicketMoreMenu
+      ticket={ticket}
+      trigger={
+        <Button variant="outline" size="icon">
+          <LucideEllipsisVertical className="h-4 w-4" />
+        </Button>
+      }
+    />
+  );
   return (
     <div
       className={clsx("w-full flex gap-x-2", {
@@ -67,12 +76,18 @@ function TicketItem({ ticket, isDetail = false }: TicketItemProps) {
             {ticket.content}
           </span>
         </CardContent>
+        <CardFooter className="flex justify-between">
+          <p className="text-sm text-muted-foreground">{ticket.deadline}</p>
+          <p className="text-sm text-muted-foreground">
+            {toCurrencyFromCent(ticket.bounty)}
+          </p>
+        </CardFooter>
       </Card>
       <div className="flex flex-col gap-y-2">
         {isDetail ? (
           <>
-            {deleteButton}
             {editButton}
+            {moreMenu}
           </>
         ) : (
           <>
