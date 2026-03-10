@@ -6,8 +6,10 @@ import { RedirectToast } from "@/components/custom/redirect-toast";
 import { Spinner } from "@/components/custom/spinner";
 import { TicketList } from "@/features/ticket/components/ticket-list";
 import { TicketUpsertForm } from "@/features/ticket/components/ticket-upsert-form";
+import { getBaseUrl } from "@/utils/urls";
 
 async function TicketsPage() {
+  console.log(getBaseUrl());
   return (
     <>
       <div className="flex-1 flex flex-col gap-y-8">
